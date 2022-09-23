@@ -1,13 +1,27 @@
+import os
+'''
+This class handles the generation and management of tables in a database.
+A database table will be created as a file within a directory. A database will be the directory iteself.
+'''
 class Table:
 
     def __init__(self):
         pass
 
-    def create(self):
-        pass
+    def create(self, fileName):
+        
+        #create the table
+        try:
+            f = open(fileName, "x")
+        # if fails, creation not possible
+        except OSError:
+            print("!Failed to create table ", fileName, " because it already exists.")
 
-    def delete(self):
-        pass
+    def delete(self, fileName):
+        if os.path.exists(Filename):
+            os.remove(fileName)
+        else:
+            print("!Failed to delete table ", fileName, " because it does not exist.")
 
     def update(self):
         pass

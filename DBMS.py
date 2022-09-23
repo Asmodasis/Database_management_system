@@ -5,10 +5,19 @@ class DBMS:
     def __init__(self):
         pass
 
-    def createDatabase(self):
-        pass
+    def setDirectoryLocation(self, location):
+        self.directory = location
+
+    def createDatabase(self, dataBase):
+        if not os.path.exists(dataBase):
+            os.makedirs(dataBase)
+        else:
+            print("!Failed to create database ", dataBase, " because it already exists.")
     
-    def deleteDatabase(self):
-        pass
+    def deleteDatabase(self, dataBase):
+        if os.path.exists(dataBase):
+            os.rmdir(dataBase)
+        else:
+            print("!Failed to delete database ", dataBase, " because it does not exist.")
 
     
