@@ -5,11 +5,9 @@ A database table will be created as a file within a directory. A database will b
 '''
 class Table:
 
-    def __init__(self):
-        pass
 
     def create(self, fileName):
-        
+
         #create the table
         try:
             f = open(fileName, "x")
