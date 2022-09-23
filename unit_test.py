@@ -1,5 +1,6 @@
+import os
 import DBMS
-import Table
+from Table import Table
 
 def unit_test_table_create():
     t = Table()
