@@ -1,5 +1,5 @@
 import os
-import DBMS
+from DBMS import DBMS
 from Table import Table
 
 def unit_test_table_create():
@@ -8,6 +8,8 @@ def unit_test_table_create():
     t.create("test_tbl_1.md")
     # failed to create table because it already exists
     t.create("test_tbl_1.md")
+
+    t.create("test_tbl_3")
 
 def unit_test_table_delete():
     t = Table()

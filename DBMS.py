@@ -1,4 +1,5 @@
 import os
+from Table import Table
 
 class DBMS:
     # creates the database management system, this will form the link with the terminal to accept input
@@ -7,6 +8,7 @@ class DBMS:
 
     def setDirectoryLocation(self, location):
         self.directory = location
+        # TODO: cd directory -- not self.directory
 
     def createDatabase(self, dataBase):
         if not os.path.exists(dataBase):
