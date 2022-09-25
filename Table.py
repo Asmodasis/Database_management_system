@@ -5,7 +5,10 @@ A database table will be created as a file within a directory. A database will b
 '''
 class Table:
 
+    '''
+    function: create
 
+    '''
     def create(self, fileName, inputList):
         # append the file extension if needed
         if not fileName.endswith('.md'):
@@ -20,25 +23,50 @@ class Table:
             print("!Failed to create table ", fileName, " because it already exists.")
         
         # if input is provided, the table is being created with parameters 
+        count = 0
         if inputList is not None:
             f = open(fileName, "w")
             for ele in inputList:
                 f.write(ele)
-                f.write(',')
+                # subtract one to account for the final comma, if split on comma, it would make a false entry
+                if count < len(inputList)-1: 
+                    f.write(',')
+                    count = count + 1 
             f.close()
         # if input in not provided, create a blank table
 
 
     def delete(self, fileName):
+        # check the directory path for the file, if there then remove
         if os.path.exists(fileName):
             os.remove(fileName)
             print("Table ", fileName, " deleted.")
         else:
             print("!Failed to delete table ", fileName, " because it does not exist.")
 
-    def update(self):
-        pass
-    
+
+    def update(self, fileName, updateString, constraint=None):
+
+        # update content
+        count = 0
+        f = open(fileName, 'r')
+            # readlines returns a list of lines, each line is an item in the list
+        lines = f.readlines()
+        f.close()
+
+        if constraint is None:
+            lines[0] = lines[0] + ',' + updateString
+        # the constraint is the location
+        else:
+            pass
+            #lines[constraint] = updateString
+
+        #TODO: Inefficient way to handle file updating   
+        f = open(fileName, 'w')
+        for item in range(0,len(lines)):
+            f.write(lines[item])
+        f.close()
+
     def query(self):
         pass
         
