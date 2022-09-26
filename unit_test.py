@@ -33,10 +33,19 @@ def unit_test_table_update():
 
 def unit_test_table_query():
     t = Table()
-    t.query("test_tbl_1.md")
-    #t.query("test_tbl_3.md")
+    #t.query("test_tbl_1.md")
+    t.query("test_tbl_3.md")
+
+def unit_test_table_parse():
+    t = Table()
+
+    t.__parseInput__("USE tb1")
+    t.__parseInput__("CREATE TABLE tbl_1 (a1 int, a2 varchar(20))")
+    t.__parseInput__("SELECT * FROM tbl_1;")
+    t.__parseInput__("DROP TABLE tbl_1;")
+    t.__parseInput__("ALTER TABLE tbl_1 ADD a3 float;")
 
 if __name__ == "__main__":
-    unit_test_table_create()
+    #unit_test_table_create()
     #unit_test_table_delete()
-    #unit_test_table_query()
+    unit_test_table_query()
