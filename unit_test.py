@@ -32,9 +32,11 @@ def unit_test_table_update():
     t.update("test_tbl_update_2.md", 'a4 int')
 
 def unit_test_table_query():
-    pass
+    t = Table()
+    t.query("test_tbl_1.md")
+    #t.query("test_tbl_3.md")
 
 if __name__ == "__main__":
-    #unit_test_table_create()
+    unit_test_table_create()
     #unit_test_table_delete()
-    unit_test_table_update()
+    #unit_test_table_query()

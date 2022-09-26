@@ -58,8 +58,9 @@ class Table:
             lines[0] = lines[0] + ',' + updateString
         # the constraint is the location
         else:
-            pass
-            #lines[constraint] = updateString
+            # Adjusts the whole row (entity) by the constraint (position)
+            # Currently requires the decoding of the position prior to call
+            lines[constraint] = lines[constraint] + updateString
 
         #TODO: Inefficient way to handle file updating   
         f = open(fileName, 'w')
@@ -67,6 +68,16 @@ class Table:
             f.write(lines[item])
         f.close()
 
-    def query(self):
-        pass
+    def query(self, fileName, constraint=None):
+
+        f = open(fileName, 'r')
+
+        # if no constraints, query the whole file
+        if constraint is None:
+            lines = f.readlines()
+            for line in lines:
+                print(line+'\n')
+
+
+        f.close()
         
