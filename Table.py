@@ -10,13 +10,10 @@ class Table:
 
     '''
     def create(self, fileName, inputList):
-        # append the file extension if needed
-        if not fileName.endswith('.md'):
-            fileName = fileName + '.md'
         
         #create the table
         try:
-            f = open(fileName, "x")
+            f = open(self.__fixFileName__(fileName), "x")
             print("Table ", fileName, " created.")
         # if fails, creation not possible
         except OSError:
@@ -25,7 +22,7 @@ class Table:
         # if input is provided, the table is being created with parameters 
         count = 0
         if inputList is not None:
-            f = open(fileName, "w")
+            f = open(self.__fixFileName__(fileName), "w")
             for ele in inputList:
                 f.write(ele)
                 # subtract one to account for the final comma, if split on comma, it would make a false entry
@@ -38,8 +35,8 @@ class Table:
 
     def delete(self, fileName):
         # check the directory path for the file, if there then remove
-        if os.path.exists(fileName):
-            os.remove(fileName)
+        if os.path.exists(self.__fixFileName__(fileName)):
+            os.remove(self.__fixFileName__(fileName))
             print("Table ", fileName, " deleted.")
         else:
             print("!Failed to delete table ", fileName, " because it does not exist.")
@@ -49,12 +46,12 @@ class Table:
 
         # update content
         count = 0
-        f = open(fileName, 'r')
+        f = open(self.__fixFileName__(fileName), 'r')
             # readlines returns a list of lines, each line is an item in the list
         lines = f.readlines()
         f.close()
 
-        if constraint is None:
+        if constraint is None and lines is not None:
             lines[0] = lines[0] + ',' + updateString
         # the constraint is the location
         else:
@@ -63,21 +60,27 @@ class Table:
             lines[constraint] = lines[constraint] + updateString
 
         #TODO: Inefficient way to handle file updating   
-        f = open(fileName, 'w')
+        f = open(self.__fixFileName__(fileName), 'w')
         for item in range(0,len(lines)):
             f.write(lines[item])
         f.close()
 
     def query(self, fileName, constraint=None):
-
-        f = open(fileName, 'r')
+        
+        f = open(self.__fixFileName__(fileName), 'r')
 
         # if no constraints, query the whole file
         if constraint is None:
             lines = f.readlines()
             for line in lines:
                 print(line+'\n')
-
+        else:
+            pass
 
         f.close()
     
+    def __fixFileName__(self, fileName):
+        # append the file extension if needed
+        if not fileName.endswith('.md'):
+            fileName = fileName + '.md'
+        return fileName

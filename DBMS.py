@@ -6,10 +6,13 @@ from Table import Table
 class DBMS:
     # creates the database management system, this will form the link with the terminal to accept input
     def __init__(self):
-
+        self.table = Table()
+    def run(self):
+        '''
+        
         if len(sys.argv) > 1:
             # There is more than one argument, we have file mode
-
+            print("{TEST} file mode")
             #invalid input
             if sys.argv[1] is not '<':
                 print("Invalid terminal input: Please try again.")
@@ -19,9 +22,16 @@ class DBMS:
             
             
         else: 
+            print("{TEST} terminal mode")
             self.__readFromTerminal__()
             
-
+        '''
+        x = ''
+        while('.EXIT' not in x):
+            x = input()
+            #print(x)
+            self.__parseInput__(x)
+    '''    
     def __readFromFile__(self, fileName):
 
         if not os.path.isfile(fileName):
@@ -35,23 +45,55 @@ class DBMS:
 
     def __readFromTerminal__(self):
         pass
-
+    '''
     def __parseInput__(self, inputLine):
         #input Line will contain an entire line of sql code
-        splitData = inputLine.split(" ")
-        size = len(splitData)
+        splitData = inputLine.replace(';','').replace('\r','').split(" ")
+        newString = ""
 
         if splitData[0] == "USE":
             self.use(str(splitData[1]))
             
         elif splitData[0] == "CREATE":
             print("Test create")
-
+            #loop through the string to find the '('
+            if splitData[1] == "DATABASE":
+                self.createDatabase(splitData[2])
+            else:
+                for i in range(0, len(inputLine)):
+                    if inputLine[i] == "(":
+                        # collect the string from the '(' to the ')'
+                        for j in range(i+1, len(inputLine)):
+                            newString = newString + inputLine[j]
+                            # minus 1 for the last parathesis
+                            if j == len(inputLine)-1:
+                                # string ended
+                                break
+                    # string finished
+                    break
+                self.table.create(splitData[2], newString)
         elif splitData[0] == "DROP":
             print("Test drop")
+            if splitData[1] == "DATABASE":
+                self.deleteDatabase(splitData[2])
+            else:
+                self.table.delete(splitData[2])
+
         elif splitData[0] == "ALTER":
+            for i in range(3,len(splitData)):
+                newString = newString + (splitData[i])
             print("Test alter")
+            self.table.update(splitData[2],newString, None)
+            
+        elif splitData[0] == "SELECT":
+            # select all
+            if splitData[1] == "*":
+                self.table.query(splitData[3], None)
+            # select something where constraint
+            else:
+                pass
         elif splitData[0] == ".EXIT":
+            print("Test exit")
             return 0
         
     
@@ -65,6 +107,7 @@ class DBMS:
         print("Using database ", location)
 
     def createDatabase(self, dataBase):
+        print("{TEST} createDatabase Called") ##### REMOVE
         if not os.path.exists(dataBase):
             os.makedirs(dataBase)
             print("Database ", dataBase, " created.")
@@ -78,3 +121,7 @@ class DBMS:
         else:
             print("!Failed to delete database ", dataBase, " because it does not exist.")
     
+
+if __name__ == "__main__":
+    d = DBMS()
+    d.run()
