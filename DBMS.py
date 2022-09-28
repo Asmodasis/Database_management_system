@@ -1,6 +1,5 @@
 from genericpath import isfile
 import os
-import sys
 from Table import Table
 
 class DBMS:
@@ -48,34 +47,43 @@ class DBMS:
     '''
     def __parseInput__(self, inputLine):
         #input Line will contain an entire line of sql code
-        splitData = inputLine.replace(';','').replace('\r','').split(" ")
+        #splitData = inputLine.replace(';','').replace('\r','').split(" ")
+        #TODO: Why does .replace keep the size of the string?
+        splitData = inputLine.split(" ")
         newString = ""
 
         if splitData[0] == "USE":
-            self.use(str(splitData[1]))
+            self.use(splitData[1].split(";")[0])
             
         elif splitData[0] == "CREATE":
             print("Test create")
             #loop through the string to find the '('
             if splitData[1] == "DATABASE":
-                self.createDatabase(splitData[2])
+                #split of semicolon, take the first half (it lacks the semicolon)
+                self.createDatabase(splitData[2].split(";")[0])
             else:
+                print("Test create else")
                 for i in range(0, len(inputLine)):
+                    print("FOR FOR")
                     if inputLine[i] == "(":
                         # collect the string from the '(' to the ')'
                         for j in range(i+1, len(inputLine)):
+                            print("Test create else FOR LOOP")
                             newString = newString + inputLine[j]
-                            # minus 1 for the last parathesis
-                            if j == len(inputLine)-1:
+
+                            # minus 2 for the last parathesis, the semicolon AND the end character \r
+                            if j == len(inputLine)-3:
                                 # string ended
                                 break
                     # string finished
-                    break
+                        break
+                print("{TEST} Newstring: ", newString) 
                 self.table.create(splitData[2], newString)
         elif splitData[0] == "DROP":
             print("Test drop")
             if splitData[1] == "DATABASE":
-                self.deleteDatabase(splitData[2])
+                #split of semicolon, take the first half (it lacks the semicolon)
+                self.deleteDatabase(splitData[2].split(";")[0])
             else:
                 self.table.delete(splitData[2])
 
@@ -99,12 +107,15 @@ class DBMS:
     
     def use(self, location):
         # Not currently using a table
-        if os.getcwd().endswith("Database_management_system"):
-            os.chdir("./"+location)
-        # currently using a table, have to go back a file location to use another
-        else:
-            os.chdir("../"+location)
-        print("Using database ", location)
+        if not os.path.exists(location):
+            print("!Failed to use database because it does not exist.")
+        else:     
+            if os.getcwd().endswith("Database_management_system"):
+                os.chdir(location)
+            # currently using a table, have to go back a file location to use another
+            else:
+                os.chdir(str("../"+location))
+            print("Using database ", location)
 
     def createDatabase(self, dataBase):
         print("{TEST} createDatabase Called") ##### REMOVE

@@ -1,24 +1,33 @@
 import os 
 from DBMS import DBMS
 
+d = DBMS()
+
 def integration_test_DBMS_create_database():
-    pass
+    d.createDatabase("db_integration_1")
 def integration_test_DBMS_delete_database():
-    pass
+    d.createDatabase("db_integration_2")
+    d.deleteDatabase("db_integration_2")
 def integration_test_DBMS_create_table():
-    pass
+    d.__parseInput__("CREATE TABLE tbl_1 (a1 int, a2 varchar(20));")
 def integration_test_DBMS_delete_table():
-    pass
+    d.__parseInput__("DROP TABLE tbl_1;")
 def integration_test_DBMS_use_database():
-    pass
+    d.createDatabase("DB_1")
+    d.createDatabase("DB_2")
+    d.use("DB_1")
+    d.__parseInput__("CREATE TABLE tbl_1 (a1 int, a2 varchar(20));")
 
 def integration_test_DBMS_parse_database_create():
-    pass
+    d.__parseInput__("CREATE DATABASE db_1;")
 def integration_test_DBMS_parse_database_delete():
-    pass
+    d.__parseInput__("DROP DATABASE db_1;")
 def integration_test_DBMS_parse_database_use():
-    pass
-
+    d.__parseInput__("CREATE DATABASE db_use_me;")
+    d.__parseInput__("USE db_use_me;")
+    d.__parseInput__("CREATE TABLE tbl_1 (a1 int, a2 varchar(20));")
+    d.__parseInput__("USE db_use_me2;")
+    d.__parseInput__("CREATE TABLE tbl_1 (a1 int, a2 varchar(20));")
 def integration_test_DBMS_parse_table_create():
     pass
 def integration_test_DBMS_parse_table_delete():
@@ -34,4 +43,11 @@ def integration_test_DBMS_parse_table_select():
     #t.__parseInput__("ALTER TABLE tbl_1 ADD a3 float;")
 
 if __name__ == "__main__":
-    integration_test_DBMS_create_database()
+    #integration_test_DBMS_create_database()
+    #integration_test_DBMS_delete_database()
+    #integration_test_DBMS_create_table()
+    #integration_test_DBMS_delete_table()
+    #integration_test_DBMS_use_database()
+    #integration_test_DBMS_parse_database_create()
+    #integration_test_DBMS_parse_database_delete()
+    integration_test_DBMS_parse_database_use()

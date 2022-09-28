@@ -21,16 +21,26 @@ class Table:
         
         # if input is provided, the table is being created with parameters 
         count = 0
+        f = open(self.__fixFileName__(fileName), "a")  
         if inputList is not None:
-            f = open(self.__fixFileName__(fileName), "w")
+
+            f.write(inputList)
+
+            '''
             for ele in inputList:
                 f.write(ele)
                 # subtract one to account for the final comma, if split on comma, it would make a false entry
                 if count < len(inputList)-1: 
                     f.write(',')
                     count = count + 1 
-            f.close()
+            '''
         # if input in not provided, create a blank table
+        else:
+            pass
+        
+        f.close()
+
+        
 
 
     def delete(self, fileName):
@@ -50,7 +60,7 @@ class Table:
             # readlines returns a list of lines, each line is an item in the list
         lines = f.readlines()
         f.close()
-
+        print("{TEST} LINE[0] : ", lines[0]) ## REMOVE
         if constraint is None and lines is not None:
             lines[0] = lines[0] + ',' + updateString
         # the constraint is the location

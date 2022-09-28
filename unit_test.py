@@ -33,7 +33,7 @@ def unit_test_table_update():
 
 def unit_test_table_query():
     t = Table()
-    #t.query("test_tbl_1.md")
+    t.query("test_tbl_1.md")
     t.query("test_tbl_3.md")
 
 def unit_test_DBMS_parse():
