@@ -33,6 +33,7 @@ def unit_test_table_update():
 
 def unit_test_table_query():
     t = Table()
+    t.create("test_tbl_update_1.md", ['a1 int', 'a2 varchar(20)'])
     t.query("test_tbl_1.md")
     t.query("test_tbl_3.md")
 
@@ -40,7 +41,7 @@ def unit_test_DBMS_parse():
     d = DBMS()
 
 if __name__ == "__main__":
-    unit_test_table_create()
+    #unit_test_table_create()
     #unit_test_table_create()
     #unit_test_table_delete()
-    #unit_test_table_query()
+    unit_test_table_query()

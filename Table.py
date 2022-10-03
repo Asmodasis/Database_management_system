@@ -51,13 +51,14 @@ class Table:
             os.remove(self.__fixFileName__(fileName))
             print("Table ", fileName, " deleted.")
         else:
-            print("!Failed to delete table ", fileName, " because it does not exist.")
+            print("!Failed to delete ", fileName, " because it does not exist.")
 
 
     def update(self, fileName, updateString, constraint=None):
         if not os.path.exists(self.__fixFileName__(fileName)):
             print("!Failed to update table ", fileName, " because it does not exist.")
         else:
+            print("Table ", fileName, "modified.")
             f = open(self.__fixFileName__(fileName), 'r')
                 # readlines returns a list of lines, each line is an item in the list
             lines = f.readlines()
@@ -87,7 +88,7 @@ class Table:
             if constraint is None:
                 lines = f.readlines()
                 for line in lines:
-                    print(line+'\n')
+                    print(line.replace(",", " | "))
             else:
                 pass
 
