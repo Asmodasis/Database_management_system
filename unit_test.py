@@ -41,7 +41,7 @@ def unit_test_DBMS_parse():
     d = DBMS()
 
 if __name__ == "__main__":
-    #unit_test_table_create()
-    #unit_test_table_create()
-    #unit_test_table_delete()
+    unit_test_table_create()
+    unit_test_table_create()
+    unit_test_table_delete()
     unit_test_table_query()

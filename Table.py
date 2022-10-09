@@ -1,20 +1,38 @@
 import os
-'''
-This class handles the generation and management of tables in a database.
-A database table will be created as a file within a directory. A database will be the directory iteself.
-'''
+
 class Table:
-
     '''
-    function: create
+    This class handles the generation and management of tables in a database.
+    A database table will be created as a file within a directory. A database will be the directory iteself.
+    
+    Attributes
+    ----------
 
-    '''
-    def create(self, fileName, inputList):
+    Methods
+    ----------
+    create(fileName, inputList)
+        creates a table
+
+    delete(fileName)
+        deletes a table
+
+    update(fileName, updateString, constraint=None):
+        updates a table
         
+    query(fileName, constraint=None)
+        queries a table
+
+    __fixFileName__(fileName)
+        checks for the appropriate filename and adds it if not found  
+
+    '''
+   
+    def create(self, fileName, inputList):
+
         #create the table
         try:
             f = open(self.__fixFileName__(fileName), "x")
-            print("Table ", fileName, " created.")
+            print("Table ", fileName, " created.", sep = '')
 
             # if input is provided, the table is being created with parameters 
             count = 0
@@ -38,7 +56,7 @@ class Table:
             f.close()
             # if fails, creation not possible
         except OSError:
-            print("!Failed to create table ", fileName, " because it already exists.")
+            print("!Failed to create table ", fileName, " because it already exists.", sep = '')
         
       
 
@@ -49,16 +67,16 @@ class Table:
         # check the directory path for the file, if there then remove
         if os.path.exists(self.__fixFileName__(fileName)):
             os.remove(self.__fixFileName__(fileName))
-            print("Table ", fileName, " deleted.")
+            print("Table ", fileName, " deleted.", sep = '')
         else:
-            print("!Failed to delete ", fileName, " because it does not exist.")
+            print("!Failed to delete ", fileName, " because it does not exist.", sep = '')
 
 
     def update(self, fileName, updateString, constraint=None):
         if not os.path.exists(self.__fixFileName__(fileName)):
-            print("!Failed to update table ", fileName, " because it does not exist.")
+            print("!Failed to update table ", fileName, " because it does not exist.", sep = '')
         else:
-            print("Table ", fileName, "modified.")
+            print("Table ", fileName, "modified.", sep = '')
             f = open(self.__fixFileName__(fileName), 'r')
                 # readlines returns a list of lines, each line is an item in the list
             lines = f.readlines()
@@ -80,7 +98,7 @@ class Table:
 
     def query(self, fileName, constraint=None):
         if not os.path.exists(self.__fixFileName__(fileName)):
-            print("!Failed to query table ", fileName, " because it does not exist.")
+            print("!Failed to query table ", fileName, " because it does not exist.", sep = '')
         else:
             f = open(self.__fixFileName__(fileName), 'r')
 
@@ -88,7 +106,8 @@ class Table:
             if constraint is None:
                 lines = f.readlines()
                 for line in lines:
-                    print(line.replace(",", " | "))
+                    newLine = line.replace(",", " |")
+                    print(newLine, sep = '')
             else:
                 pass
 
