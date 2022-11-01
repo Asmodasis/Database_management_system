@@ -35,10 +35,10 @@ $ sudo python3 -m pip install shutil
 ## Usage
 
 ```sh
-$ python3 DBMS.py < PA1_test.sql
+$ python3 DBMS.py < PA2_test.sql
 
 ```
-This will run all sql commands in the file PA1_test.sql
+This will run all sql commands in the file PA2_test.sql
 
 ```sh
 $ python3 DBMS.py 
@@ -47,7 +47,7 @@ $ python3 DBMS.py
 ```
 Will activate SQL input mode
 
-This will run all sql commands in the file PA1_test.sql
+This will run all sql commands in the file PA2_test.sql
 
 
 ## Meta
@@ -58,7 +58,7 @@ Shawn Ray - shawnray@nevada.unr.edu
 
 ## Contributing
 
-1. Fork it (<https://github.com/Asmodasis/Cancer_detection_system/fork>)
+1. Fork it (<https://github.com/Asmodasis/Database_Management_system/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
