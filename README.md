@@ -35,7 +35,7 @@ $ sudo python3 -m pip install shutil
 ## Usage
 
 ```sh
-$ python3 DBMS.py < PA2_test.sql
+$ python3 DBMS.py < PA3_test.sql
 
 ```
 This will run all sql commands in the file PA2_test.sql
