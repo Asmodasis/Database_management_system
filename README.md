@@ -30,24 +30,18 @@ $ sudo python3 -m pip install os
 $ sudo python3 -m pip install shutil
 ```
 
-### Any optional sections
+### File Dependencies
+ - The transaction states are tracked with a text file named transaction_state.txt. This file is required for the usage of transactions.
 
 ## Usage
-
-```sh
-$ python3 DBMS.py < PA3_test.sql
-
-```
-This will run all sql commands in the file PA2_test.sql
 
 ```sh
 $ python3 DBMS.py 
 >> CREATE DATABASE db_1;
 >> CREATE TABLE tbl_1 (a1 int, a2 varchar(20)); 
 ```
-Will activate SQL input mode
-
-This will run all sql commands in the file PA2_test.sql
+Will activate SQL input mode. For the sake of demonstrating transactions. This project will only support SQL input mode.
+Please input each command in the file PA4_test.sql sequentially. 
 
 
 ## Meta

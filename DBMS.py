@@ -1,8 +1,8 @@
 import os
 import shutil # recursive remove
 from Table import Table
-import sys
-
+import threading 
+import asyncio  #asyncio
 class DBMS:
 
     '''
@@ -47,15 +47,24 @@ class DBMS:
         Finds the constraints for the join
     '''
    
+
     # creates the database management system, this will form the link with the terminal to accept input
     def __init__(self):
         self.table = Table()
         # retrieve and store the original directory
         self.originalDirectory = os.getcwd()
-
+        # The state of the current transaction 
+        self.commit = False
+        # Temp storage for a commit update 
+        self.str1 = ''
+        self.str2 = ''
+        self.str3 = ''
+        self.str4 = ''
+        self.str5 = ''
+        self.transactString = ''
     def run(self):
 
-        
+        '''
         try:
 
             x = ''
@@ -68,9 +77,27 @@ class DBMS:
                     pass
         except EOFError:        
             print("All Done.")
-
-    def __parseInput__(self, inputLine):
+        '''
         
+        while(True):
+            x = input()
+            if x is None or x == '.EXIT' or x == '.exit':
+                break
+            asyncio.run(self.__parseInput__(x)) 
+       
+                
+        # A transaction has ended
+        fileName = '../transaction_state.txt'
+        f = open(fileName, 'w')
+        f.write('False')
+        f.close()
+        print("All Done.")
+
+    async def __parseInput__(self, inputLine):
+
+        #lock = asyncio.Lock()
+        #await lock.acquire()
+        #async with lock:
         #input Line will contain an entire line of sql code
         if inputLine == '':
             return 0
@@ -93,20 +120,9 @@ class DBMS:
 
                 self.createDatabase(splitData[2])
             else: # ELSE CREATE TABLE
+                
                 s = inputLine.split('(',1)
-                # To account for the lack of a space on the command
-                '''
-                print("length of S == ",len(s))
-                print("s0 == ",s[0].split(' ',)[2])
-                print("s1 == ",s[1].replace(');','') )
-                for i in range(3,len(splitData),+2):
 
-                    if not splitData[i].__contains__("),"):
-                        # does not contains a varchar
-                        splitData[i].replace('(','').replace(')','') 
-
-
-                '''
                 for i in range(0, len(inputLine)):
                     if inputLine[i] == "(":
                         # collect the string from the '(' to the ')'
@@ -140,7 +156,7 @@ class DBMS:
             self.table.alter(splitData[2],newString, None)
             
         elif splitData[0] == "SELECT" or splitData[0] == "select" :
-            
+            self.transactString = splitData[3]
             # select all
             if splitData[1] == "*":
 
@@ -192,6 +208,9 @@ class DBMS:
                     elif splitData[12] == "<=":
                         passSign = "less-equal"
                     self.outerJoin(splitData[3], splitData[8], 'left', splitData[11], splitData[13], passSign)
+                else:
+                    # Select all
+                    self.table.query(splitData[3], None,None,None,None)
             else:
                 pass
                     # FUTURE IMPLEMENTATION
@@ -248,10 +267,16 @@ class DBMS:
         elif splitData[0] == "UPDATE" or splitData[0] == "update":
         
             if splitData[2] == "SET" or splitData[2] == "set" :
-                  #TODO: This implementation can only delete from a table with ONE constraint
-           
+                #TODO: This implementation can only delete from a table with ONE constraint
+                    
                     if splitData[8] == "=":
-                        self.table.update(splitData[1],splitData[3],splitData[5],splitData[7],splitData[9])
+                      
+                        self.str1 = splitData[1]
+                        self.str2 = splitData[3]
+                        self.str3 = splitData[5]
+                        self.str4 = splitData[7]
+                        self.str5 = splitData[9]
+
                     elif splitData[8] == "!=":
                         # FUTURE IMPLEMENTATION
                         pass
@@ -267,8 +292,46 @@ class DBMS:
                     elif splitData[8] == "<=":
                         # FUTURE IMPLEMENTATION
                         pass
-                    
-                             
+        elif splitData[0] == "begin" or splitData[0] == "BEGIN":
+            
+            fileName = '../transaction_state.txt'
+            f = open(fileName, 'r')
+            readString=f.readlines()
+            f.close()
+            
+            print("Transaction starts.")
+            if 'False' in readString:
+                # A transaction has begun
+                f = open(fileName, 'w')
+                f.write('True')
+                f.close()
+                self.commit = True
+            else:
+                print("Error: Table ", self.transactString," is locked!")
+                self.commit = False
+
+        elif splitData[0] == "commit" or splitData[0] == "COMMIT": 
+            fileName = '../transaction_state.txt'
+            f = open(fileName, 'r')
+            readString=f.readlines()
+            f.close()
+            
+            if 'True' in readString and self.commit == True:
+                print("Transaction committed.")
+                fileName = '../transaction_state.txt'
+                f = open(fileName, 'w')
+                f.write('False')
+                f.close()
+                
+                self.table.update(self.str1,self.str2,self.str3,self.str4,self.str5)
+              
+            elif 'True' in readString and self.commit == False:
+                print("Transaction abort.")
+            
+                
+                
+            #lock.release()
+
     def use(self, location):
         # Not currently using a table
 
